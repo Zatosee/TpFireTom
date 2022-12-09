@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TP4</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<script type="module">
+    import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-database.js"
+
+    const btn = document.getElementById("oui");
+    btn.addEventListener("submit", buttonclick);
+
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js'
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCI80LEcNYihePQ-6jfLW7bhy4M8rJYQp0",
+        authDomain: "tp4complementweb.firebaseapp.com",
+        databaseURL: "https://tp4complementweb-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "tp4complementweb",
+        storageBucket: "tp4complementweb.appspot.com",
+        messagingSenderId: "784749265401",
+        appId: "1:784749265401:web:317c3d04a0b73b38577d28"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    console.log("app", app)
+
+    const database = getDatabase(app);
+    console.log("database", database)
+
+    const usersRef = ref(database, 'users')
+
+    function buttonclick(e){
+        e.preventDefault()
+        const newUserRef = push(usersRef)
+
+        console.log("nouvelle clé :", newUserRef)
+
+        set(newUserRef,
+            {
+                user: document.getElementById("name").value,
+                age: document.getElementById("age").value
+            }
+        )
+    }
+
+    const liste = document.getElementById("list");
+
+
+    onValue(usersRef,
+        (snapshot) => {
+            const data = snapshot.val()
+            liste.innerHTML="";
+            Object.values(data).forEach(element =>{
+                list.innerHTML+="<li>" + element.user + " - " + element.age +"</li>"
+            })
+
+        }
+    )
+
+
+
+</script>
+
+<body>
+    <main>
+
+        <form id="oui">
+            <div>
+            <h1> TP 4 </h1>
+            <label for="name"> </label>
+            <input id="name" placeholder="Nom" name="username" type="text">
+            </div>
+
+            <div>
+            <label for="age"> </label>
+            <input id="age" placeholder="Age" name="username" type="number">
+            </div>
+
+            <div>
+            <button> CLICK MOI STP </button>
+            </div>
+
+            <ul id="list">
+
+            </ul>
+
+        </form>
+
+    </main>
+
+</body>
+</html>

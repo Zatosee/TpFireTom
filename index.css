@@ -1,0 +1,7 @@
+body{
+    display:flex ;
+    flex-direction: column;
+    background: #383838;
+    color: white;
+    font-family: "Agency FB";
+}
